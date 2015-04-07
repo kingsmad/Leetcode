@@ -7,10 +7,11 @@ public:
         if (!nums)
             return;
         k = k % n;
-        int buf[n];
-        memcpy(buf, nums+n-k, sizeof(int)*k);
-        memcpy(buf+k, nums, sizeof(int)*(n-k));
-        memcpy(nums, buf, sizeof(int)*n);
+        int buf[k];
+        memcpy(buf, nums+n-k, sizeof(int) * k);
+        memmove(nums+k, nums, sizeof(int) * (n-k));
+        memcpy(nums, buf, sizeof(int) * k);
+        
         return;
     }
 };

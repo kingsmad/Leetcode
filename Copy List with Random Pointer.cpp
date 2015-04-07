@@ -1,56 +1,69 @@
-/**
- * Definition for singly-linked list with a random pointer.
- * struct RandomListNode {
- *     int label;
- *     RandomListNode *next, *random;
- *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
- * };
- */
+/*************************************************************************
+    > File Name: Copy List with Random Pointer.cpp
+    > Author: Archer Liu
+    > Mail: maple.km2041@me.com 
+    > Created Time: Thu Apr  2 18:15:33 2015
+ ************************************************************************/
+
+
+
+ 
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+
+struct RandomListNode {
+   int label;
+   RandomListNode *next, *random;
+   RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+};
+
 class Solution {
 public:
-    RandomListNode *copyRandomList(RandomListNode *head) {
-        // Note: The Solution object is instantiated only once and is reused by each test case.
-        if(head == NULL)
-        	return head;
+    RandomListNode* copyRandomList(RandomListNode* head) {
+	if(!head)
+	    return head;
 
-        RandomListNode* temp = head;
-        while(temp != NULL) {
-        	RandomListNode* tp = temp->next;
-        	temp->next = new RandomListNode(temp->label);
-        	temp->next->next = tp;
-        	temp->next->random = temp->random;
-        	temp = tp;
-        }
+	RandomListNode* p = head;	
+	while(p) {
+	    RandomListNode* rep = new RandomListNode(p->label);
+	    rep->random = p->random;
+	    rep->next = p->next;
+	    p->next = rep;
+	    p = rep->next;
+	}
 
-        temp = head->next;
-        while(temp != NULL) {
-        	if(temp->random)
-        		temp->random = temp->random->next;
-        	if(temp->next)
-        		temp = temp->next->next;
-        	else
-        		temp = NULL;
-        }
+	p = head;
+	while(p) {
+	    RandomListNode* q = p->next;
+	    if(q->random)
+		q->random = q->random->next;
+	    p = q->next;
+	}
 
-        
+	RandomListNode ans(-1);
+	RandomListNode* tail = &ans;
+	p = head;
+	while(p) {
+	    tail->next = p->next;
+	    tail = tail->next;
+	    p->next = tail->next;
+	    tail->next = 0;
+	    p = p->next;
+	}
 
-        RandomListNode* head_1 = head;
-        RandomListNode* head_2 = head->next;
-        RandomListNode* tail_1 = head_1;
-        RandomListNode* tail_2 = head_2;
-        temp = head_2->next;
-        while(temp != NULL) {
-        	RandomListNode* nt = temp->next->next;
-        	tail_1->next = temp;
-        	tail_2->next = temp->next;
-
-        	tail_1 = tail_1->next;
-        	tail_2 = tail_2->next;
-
-        	temp = nt;
-        }
-        tail_1->next = NULL;
-        return head_2;
-
+	return ans.next;
     }
 };
+
+
+int main(int argc, char** argv) {
+    //int len;
+    //vector<RandomListNode*> vec(len);
+    //for(int i=0; i<len; ++i) {
+    //    int t; cin >> t;
+    //    vec[i] = new RandomListNode(t);	
+    //}
+    RandomListNode node(-1);
+    node.random = 
+}
